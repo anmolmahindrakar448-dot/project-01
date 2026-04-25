@@ -210,69 +210,69 @@
             document.getElementById("registerForm").classList.remove("active");
             document.getElementById("loginForm").classList.add("active");
         }
+function login() {
+    let email = document.getElementById("loginEmail").value.trim();
+    let password = document.getElementById("loginPassword").value.trim();
 
-        function login() {
+    document.getElementById("loginEmailError").innerText = "";
+    document.getElementById("loginPasswordError").innerText = "";
 
-            let email = document.getElementById("loginEmail").value.trim();
-            let password = document.getElementById("loginPassword").value.trim();
+    let valid = true;
 
-            document.getElementById("loginEmailError").innerText = "";
-            document.getElementById("loginPasswordError").innerText = "";
+    if (email === "") {
+        document.getElementById("loginEmailError").innerText = "Email is required";
+        valid = false;
+    }
+
+    if (password === "") {
+        document.getElementById("loginPasswordError").innerText = "Password is required";
+        valid = false;
+    }
+
+    // 🔐 NEW CHECK (important)
+    let savedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (valid) {
+        if (!savedUser) {
+            document.getElementById("loginEmailError").innerText = "No user registered";
+            return;
+        }
+
+        if (email === savedUser.email && password === savedUser.password) {
+            alert("Login Successful!");
+        } else {
+            document.getElementById("loginPasswordError").innerText = "Invalid email or password";
+        }
+    }
+}
+    
+           
+
+        function register() {
+            let name = document.getElementById("regName").value.trim();
+            let email = document.getElementById("regEmail").value.trim();
+            let password = document.getElementById("regPassword").value.trim();
+            let confirmPassword = document.getElementById("regConfirmPassword").value.trim();
+
+            document.getElementById("regNameError").innerText = "";
+            document.getElementById("regEmailError").innerText = "";
+            document.getElementById("regPasswordError").innerText = "";
+            document.getElementById("regConfirmPasswordError").innerText = "";
 
             let valid = true;
-
-            if (email === "") {
-                document.getElementById("loginEmailError").innerText = "Email is required";
-                valid = false;
-            }
-
-            if (password === "") {
-                document.getElementById("loginPasswordError").innerText = "Password is required";
-                valid = false;
-            }
-
-            // 🔐 NEW CHECK (important)
-            let savedUser = JSON.parse(localStorage.getItem("user"));
-
             if (valid) {
-                if (!savedUser) {
-                    document.getElementById("loginEmailError").innerText = "No user registered";
-                    return;
-                }
+                let user = {
+                    name: name,
+                    email: email,
+                    password: password
+                };
 
-                if (email === savedUser.email && password === savedUser.password) {
-                    alert("Login Successful!");
-                } else {
-                    document.getElementById("loginPasswordError").innerText = "Invalid email or password";
-                }
+                localStorage.setItem("user", JSON.stringify(user));
+
+                alert("Registration Successful!");
+                showLogin();
             }
-
-
-            function register() {
-                let name = document.getElementById("regName").value.trim();
-                let email = document.getElementById("regEmail").value.trim();
-                let password = document.getElementById("regPassword").value.trim();
-                let confirmPassword = document.getElementById("regConfirmPassword").value.trim();
-
-                document.getElementById("regNameError").innerText = "";
-                document.getElementById("regEmailError").innerText = "";
-                document.getElementById("regPasswordError").innerText = "";
-                document.getElementById("regConfirmPasswordError").innerText = "";
-
-                let valid = true;
-                if (valid) {
-                    let user = {
-                        name: name,
-                        email: email,
-                        password: password
-                    };
-
-                    localStorage.setItem("user", JSON.stringify(user));
-
-                    alert("Registration Successful!");
-                    showLogin();
-                }
-            }
+        }
     </script>
 
 </body>
