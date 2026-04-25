@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task 5 </title>
+    <title>Task 5</title>
+
     <style>
         * {
             margin: 0;
@@ -18,7 +19,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* background: linear-gradient(135deg, #74ebd5, #9face6); */
             padding: 20px;
         }
 
@@ -129,8 +129,8 @@
             height: 100%;
             object-fit: cover;
             z-index: -1;
-        
         }
+
         footer {
             position: fixed;
             bottom: 0;
@@ -144,9 +144,10 @@
             z-index: 1;
         }
     </style>
-
+</head>
 
 <body>
+
     <video autoplay muted loop id="bgVideo">
         <source src="vecteezy_slomotion-hyperspace-jump-through-the-blue-stars-field_4453627.mp4" type="video/mp4">
     </video>
@@ -196,8 +197,9 @@
         </div>
 
     </div>
- <footer>WebNova Studio | Designed by Anmol A.Mahindrakar</footer>
-   
+
+    <footer>WebNova Studio | Designed by Anmol A.Mahindrakar</footer>
+
     <script>
         function showRegister() {
             document.getElementById("loginForm").classList.remove("active");
@@ -210,6 +212,7 @@
         }
 
         function login() {
+
             let email = document.getElementById("loginEmail").value.trim();
             let password = document.getElementById("loginPassword").value.trim();
 
@@ -228,50 +231,50 @@
                 valid = false;
             }
 
-            if (valid) {
-                alert("Login Successful!");
-            }
-        }
-
-        function register() {
-            let name = document.getElementById("regName").value.trim();
-            let email = document.getElementById("regEmail").value.trim();
-            let password = document.getElementById("regPassword").value.trim();
-            let confirmPassword = document.getElementById("regConfirmPassword").value.trim();
-
-            document.getElementById("regNameError").innerText = "";
-            document.getElementById("regEmailError").innerText = "";
-            document.getElementById("regPasswordError").innerText = "";
-            document.getElementById("regConfirmPasswordError").innerText = "";
-
-            let valid = true;
-
-            if (name === "") {
-                document.getElementById("regNameError").innerText = "Name is required";
-                valid = false;
-            }
-
-            if (email === "") {
-                document.getElementById("regEmailError").innerText = "Email is required";
-                valid = false;
-            }
-
-            if (password.length < 6) {
-                document.getElementById("regPasswordError").innerText = "Password must be at least 6 characters";
-                valid = false;
-            }
-
-            if (password !== confirmPassword) {
-                document.getElementById("regConfirmPasswordError").innerText = "Passwords do not match";
-                valid = false;
-            }
+            // 🔐 NEW CHECK (important)
+            let savedUser = JSON.parse(localStorage.getItem("user"));
 
             if (valid) {
-                alert("Registration Successful!");
-                showLogin();
+                if (!savedUser) {
+                    document.getElementById("loginEmailError").innerText = "No user registered";
+                    return;
+                }
+
+                if (email === savedUser.email && password === savedUser.password) {
+                    alert("Login Successful!");
+                } else {
+                    document.getElementById("loginPasswordError").innerText = "Invalid email or password";
+                }
             }
-        }
+
+
+            function register() {
+                let name = document.getElementById("regName").value.trim();
+                let email = document.getElementById("regEmail").value.trim();
+                let password = document.getElementById("regPassword").value.trim();
+                let confirmPassword = document.getElementById("regConfirmPassword").value.trim();
+
+                document.getElementById("regNameError").innerText = "";
+                document.getElementById("regEmailError").innerText = "";
+                document.getElementById("regPasswordError").innerText = "";
+                document.getElementById("regConfirmPasswordError").innerText = "";
+
+                let valid = true;
+                if (valid) {
+                    let user = {
+                        name: name,
+                        email: email,
+                        password: password
+                    };
+
+                    localStorage.setItem("user", JSON.stringify(user));
+
+                    alert("Registration Successful!");
+                    showLogin();
+                }
+            }
     </script>
+
 </body>
 
 </html>
